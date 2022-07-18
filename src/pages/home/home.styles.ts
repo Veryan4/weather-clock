@@ -1,6 +1,13 @@
 import { css } from "lit";
 
 export const styles = css`
+  .main {
+    display: flex;
+    justify-content: center;
+    height: 98vh;
+    align-items: center;
+  }
+
   .face {
     position: relative;
     margin: 0 auto;
@@ -166,5 +173,11 @@ export const styles = css`
     width: 24px;
     height: 24px;
     z-index: 20;		
+  }
+
+
+  @media only screen and (max-width: 752px) {
+    .main {
+    }
   }
 `;

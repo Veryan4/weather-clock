@@ -1,24 +1,10 @@
-import { LitElement, html, css } from "lit";
+import { LitElement, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { routerService, translateService } from "./services";
 import { RouteController, ToastController } from "./controllers";
 
 @customElement("my-app")
-class Truba extends LitElement {
-  static styles = [
-    css`
-      .main {
-        display: flex;
-        justify-content: center;
-        height: 90vh;
-        align-items: center;
-      }
-      @media only screen and (max-width: 752px) {
-        .main {
-        }
-      }
-    `,
-  ];
+class Clock extends LitElement {
 
   private router = new RouteController(this);
   private toaster = new ToastController(this);
@@ -32,7 +18,7 @@ class Truba extends LitElement {
 
   render() {
     return html`
-      <div class="main">${this.router.navigation()}</div>
+      ${this.router.navigation()}
       ${this.toaster.wait()}
     `;
   }

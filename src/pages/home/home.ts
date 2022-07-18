@@ -25,17 +25,19 @@ class HomeComponent extends LitElement {
   render() {
     
     return html`
-    <div class="face">
-      <div class="hour" style=${styleMap(this.hourStyles)}></div>
-      <div class="minute" style=${styleMap(this.minuteStyles)}></div>
-      <div class="second" style=${styleMap(this.secondStyles)}></div>
-      <div class="center"></div>
-      <div class="time time-12-6"></div>
-      <div class="time time-3-9"></div>
-      <div class="time time-1-7"></div>
-      <div class="time time-5-11"></div>
-      <div class="time time-2-8"></div>
-      <div class="time time-4-10"></div>          
+    <div class="main" @click=${this.requestFullscreen}>
+      <div class="face">
+        <div class="hour" style=${styleMap(this.hourStyles)}></div>
+        <div class="minute" style=${styleMap(this.minuteStyles)}></div>
+        <div class="second" style=${styleMap(this.secondStyles)}></div>
+        <div class="center"></div>
+        <div class="time time-12-6"></div>
+        <div class="time time-3-9"></div>
+        <div class="time time-1-7"></div>
+        <div class="time time-5-11"></div>
+        <div class="time time-2-8"></div>
+        <div class="time time-4-10"></div>
+      </div>     
     </div>`;
   }
 
