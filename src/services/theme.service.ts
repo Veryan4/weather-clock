@@ -28,13 +28,28 @@ function getTheme(): string {
   return storedTheme ? storedTheme : "light";
 }
 
-function changeTheme(): void {
-  if (theme === "light") {
-    theme = "dark";
-    setDarkTheme();
+function changeTheme(newTheme?: "light" | "dark"): void {
+  if(newTheme) {
+    if (theme == newTheme) {
+      return
+    }
+    theme = newTheme
+    if (theme === "light") {
+      theme = "light";
+      setLightTheme();
+    } else {
+      theme = "dark";
+      setDarkTheme();
+      
+    }
   } else {
-    theme = "light";
-    setLightTheme();
+    if (theme === "light") {
+      theme = "dark";
+      setDarkTheme();
+    } else {
+      theme = "light";
+      setLightTheme();
+    }
   }
   localStorage.setItem(THEME_KEY, theme);
   window.dispatchEvent(new CustomEvent(THEME_EVENT));

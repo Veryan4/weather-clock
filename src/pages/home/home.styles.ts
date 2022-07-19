@@ -9,8 +9,8 @@ export const styles = css`
   }
 
   .clock {
-    min-height: 18em;
-    min-width: 18em;
+    min-height: 54em;
+    min-width: 54em;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -19,7 +19,7 @@ export const styles = css`
     background-position: center center;
     background-size: cover;
     border-radius: 50%;
-    border: 4px solid var(--main-bg-color);
+    border: 12px solid var(--main-bg-color);
     box-shadow: 0 -15px 15px rgba(255, 255, 255, 0.05),
       inset 0 -15px 15px rgba(255, 255, 255, 0.05), 0 15px 15px rgba(0, 0, 0, 0.3),
       inset 0 15px 15px rgba(0, 0, 0, 0.3);
@@ -27,10 +27,10 @@ export const styles = css`
   }
   .clock:before {
     content: "";
-    height: 0.75rem;
-    width: 0.75rem;
+    height: 2.25rem;
+    width: 2.25rem;
     background-color: var(--main-text-color);
-    border: 2px solid var(--main-bg-color);
+    border: 6px solid var(--main-bg-color);
     position: absolute;
     border-radius: 50%;
     z-index: 1000;
@@ -45,38 +45,38 @@ export const styles = css`
     border-radius: 50%;
   }
   .hour {
-    height: 10em;
-    width: 10em;
+    height: 30em;
+    width: 30em;
   }
   .hour:before {
     content: "";
     position: absolute;
     height: 50%;
-    width: 6px;
+    width: 18px;
     background-color: var(--main-text-color);
-    border-radius: 6px;
+    border-radius: 18px;
   }
   .min {
-    height: 12em;
-    width: 12em;
+    height: 36em;
+    width: 36em;
   }
   .min:before {
     content: "";
     height: 50%;
-    width: 4px;
+    width: 12px;
     background-color: var(--main-text-color);
-    border-radius: 4px;
+    border-radius: 12px;
   }
   .sec {
-    height: 13em;
-    width: 13em;
+    height: 39em;
+    width: 39em;
   }
   .sec:before {
     content: "";
     height: 60%;
-    width: 2px;
+    width: 6px;
     background-color: #f00;
-    border-radius: 2px;
+    border-radius: 6px;
   }
 
 `;
