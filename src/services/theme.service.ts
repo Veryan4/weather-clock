@@ -15,11 +15,13 @@ if (theme === "light") {
 function setLightTheme(): void {
   root.style.setProperty("--main-bg-color", "#fff");
   root.style.setProperty("--main-text-color", "#888888");
+  root.style.setProperty("---second-text-color", "black");
 }
 
 function setDarkTheme(): void {
   root.style.setProperty("--main-bg-color", "#1e1f26");
   root.style.setProperty("--main-text-color", "#ccc");
+  root.style.setProperty("---second-text-color", "white");
 }
 
 

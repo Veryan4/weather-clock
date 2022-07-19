@@ -3,9 +3,20 @@ import { css } from "lit";
 export const styles = css`
   .main {
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    height: 98vh;
     align-items: center;
+    height: 98vh;
+  }
+
+  .clock-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5rem;
+  }
+  .weather-wrap{
+    width: 50rem;
   }
 
   .clock {

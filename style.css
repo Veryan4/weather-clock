@@ -1,10 +1,12 @@
 :root {
   --main-bg-color: #fff;
   --main-text-color: #888888;
+  --second-text-color: black;
 }
 [data-theme="dark"] {
   --main-bg-color: #1e1f26;
   --main-text-color: #ccc;
+  --second-text-color: white;
 }
 * {
   box-sizing: border-box;

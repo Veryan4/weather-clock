@@ -4,6 +4,8 @@ import { styleMap } from 'lit/directives/style-map.js';
 import { themeService } from "../../services";
 import { styles } from "./home.styles";
 
+import "../../components/weather/weather";
+
 @customElement("clock-home")
 class HomeComponent extends LitElement {
   static styles = [styles];
@@ -13,7 +15,6 @@ class HomeComponent extends LitElement {
 
   constructor() {
     super();
-    this.selectTheme();
   }
 
   @state()
@@ -27,11 +28,16 @@ class HomeComponent extends LitElement {
 
   render() {
   return html`
-    <div class="main" @click=${this.requestFullscreen}>
-      <div class="clock">
-        <div class="hour" style=${styleMap(this.hourStyles)}></div>
-        <div class="min" style=${styleMap(this.minuteStyles)}></div>
-        <div class="sec" style=${styleMap(this.secondStyles)}></div>
+    <div class="main">
+      <div class="clock-wrap" @click=${this.requestFullscreen}>
+        <div class="clock">
+          <div class="hour" style=${styleMap(this.hourStyles)}></div>
+          <div class="min" style=${styleMap(this.minuteStyles)}></div>
+          <div class="sec" style=${styleMap(this.secondStyles)}></div>
+        </div>
+      </div>
+      <div class="weather-wrap">
+        <app-weather></app-weather>
       </div>
     </div>`;
   }
@@ -52,11 +58,12 @@ class HomeComponent extends LitElement {
       this.secondStyles = { transform: `rotateZ(${ss}deg)`};
     }, 1000);
 
+    this.selectTheme();
     this.minuteInterval = setInterval(this.selectTheme, 60000)
   }
 
   selectTheme() {
-    const hour = new Date().getHours()
+    const hour = new Date().getHours();
     if (6 < hour && hour < 18) {
       themeService.changeTheme("light")
     } else {

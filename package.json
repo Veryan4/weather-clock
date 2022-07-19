@@ -35,6 +35,7 @@
   },
   "dependencies": {
     "lit": "^2.1.1",
-    "workbox-core": "^6.4.2"
+    "workbox-core": "^6.4.2",
+    "x-weather": "^3.0.0"
   }
 }
