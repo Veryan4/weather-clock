@@ -1,21 +1,9 @@
 const THEME_EVENT = "theme-update";
-const THEME_KEY = "rummy-theme";
+const THEME_KEY = "clock-theme";
 
 export const themeService = { getTheme, changeTheme, THEME_EVENT };
 
 const root = document.querySelector(":root") as HTMLElement;
-const primaryWhite = "#fafafa";
-const secondaryWhite = "white";
-const primaryBlack = "#2c2c2c";
-const secondaryBlack = "black";
-const imageColor = "unset";
-const invertedImageColor = "invert(100%)";
-const inputBackgroundColor = "#E8E8E8";
-const invertedInputBackgroundColor = "#696969";
-const outlineColor = "#b0bec5";
-const invertedOutlineColor = "#2c2c2c";
-const toastBackground = "#313131";
-const chipBackground = "#696969";
 
 let theme = getTheme();
 if (theme === "light") {
@@ -25,25 +13,13 @@ if (theme === "light") {
 }
 
 function setLightTheme(): void {
-  root.style.setProperty("--primary-color", primaryBlack);
-  root.style.setProperty("--primary-background-color", primaryWhite);
-  root.style.setProperty("--secondary-background-color", secondaryWhite);
-  root.style.setProperty("--image-color", imageColor);
-  root.style.setProperty("--input-fill", inputBackgroundColor);
-  root.style.setProperty("--outline-color", outlineColor);
-  root.style.setProperty("--toast-background", toastBackground);
-  root.style.setProperty("--chip-background", inputBackgroundColor);
+  root.style.setProperty("--main-bg-color", "#fff");
+  root.style.setProperty("--main-text-color", "#888888");
 }
 
 function setDarkTheme(): void {
-  root.style.setProperty("--primary-color", primaryWhite);
-  root.style.setProperty("--primary-background-color", primaryBlack);
-  root.style.setProperty("--secondary-background-color", secondaryBlack);
-  root.style.setProperty("--image-color", invertedImageColor);
-  root.style.setProperty("--input-fill", invertedInputBackgroundColor);
-  root.style.setProperty("--outline-color", invertedOutlineColor);
-  root.style.setProperty("--toast-background", secondaryBlack);
-  root.style.setProperty("--chip-background", chipBackground);
+  root.style.setProperty("--main-bg-color", "#1e1f26");
+  root.style.setProperty("--main-text-color", "#ccc");
 }
 
 

@@ -25,37 +25,29 @@ class HomeComponent extends LitElement {
   render() {
     
     return html`
-    <div class="main" @click=${this.requestFullscreen}>
-      <div class="face">
-        <div class="hour" style=${styleMap(this.hourStyles)}></div>
-        <div class="minute" style=${styleMap(this.minuteStyles)}></div>
-        <div class="second" style=${styleMap(this.secondStyles)}></div>
-        <div class="center"></div>
-        <div class="time time-12-6"></div>
-        <div class="time time-3-9"></div>
-        <div class="time time-1-7"></div>
-        <div class="time time-5-11"></div>
-        <div class="time time-2-8"></div>
-        <div class="time time-4-10"></div>
-      </div>     
-    </div>`;
-  }
+      <div class="main" @click=${this.requestFullscreen}>
+        <div class="clock">
+          <div class="hour" style=${styleMap(this.hourStyles)}></div>
+          <div class="min" style=${styleMap(this.minuteStyles)}></div>
+          <div class="sec" style=${styleMap(this.secondStyles)}></div>
+        </div>
+      </div>`;
+    }
 
   connectedCallback() {
     super.connectedCallback();
 
+    const deg = 6;
+
     this.interval = setInterval(() => {
-      const seconds = new Date().getSeconds();
-      const sdegree = seconds * 6;
-      this.secondStyles = { transform: 'rotate('+ sdegree + 'deg)'};
+      const day = new Date();
+      const hh = day.getHours() * 30;
+      const mm = day.getMinutes() * deg;
+      const ss = day.getSeconds() * deg;
 
-      const mins = new Date().getMinutes();
-      const mdegree = mins * 6;
-      this.minuteStyles = { transform: 'rotate('+ mdegree + 'deg)'};
-
-      const hours = new Date().getHours();   
-      const hdegree = hours * 30 + (mins / 2);   
-      this.hourStyles = { transform: 'rotate('+ hdegree + 'deg)'};
+      this.hourStyles = { transform: `rotateZ(${hh + mm / 12}deg)`};
+      this.minuteStyles = { transform: `rotateZ(${mm}deg)`};
+      this.secondStyles = { transform: `rotateZ(${ss}deg)`};
     }, 1000);
   }
 

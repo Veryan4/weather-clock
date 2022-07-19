@@ -1,4 +1,4 @@
-const LANGUAGE_KEY = "tuba_lang";
+const LANGUAGE_KEY = "clock_lang";
 const LANGUAGE_EVENT = "lang-update";
 
 let translations: any;
