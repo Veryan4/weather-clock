@@ -7,6 +7,7 @@ export const styles = css`
     justify-content: center;
     align-items: center;
     height: 98vh;
+    cursor:none;
   }
 
   .clock-wrap {
