@@ -4,9 +4,11 @@ const host = "https://api.openweathermap.org/data/2.5/"
 const appid = import.meta.env.VITE_WEATHER_API_KEY as string
 const latitude = "45.24";
 const longitude= "-72.65";
+const WEATHER_EVENT = "weather-update";
 
 export const weatherService = {
-    getWeather
+    getWeather,
+    WEATHER_EVENT
 }
 
 async function getWeather() {
@@ -30,6 +32,7 @@ async function getWeather() {
             windSpeed: weatherHour.wind.speed
         }
     })
+    window.dispatchEvent(new CustomEvent(WEATHER_EVENT, { detail: {current, forecast} }));
     return [current, forecast] as const
 }
 

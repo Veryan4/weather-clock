@@ -1,41 +1,37 @@
 import { LitElement, html } from "lit";
-import { customElement, property } from "lit/decorators.js";
-import { SimpleWeather } from "../../models";
+import { customElement } from "lit/decorators.js";
+import { WeatherController } from "../../controllers";
 import { styles } from "./weather.styles";
 
 @customElement("app-weather")
 class WeatherComponent extends LitElement {
   static styles = [styles];
 
-  @property({type: Object})
-  current: SimpleWeather;
-
-  @property({type: Array})
-  forecast: SimpleWeather[];
+  private weather = new WeatherController(this)
 
   constructor() {
     super();
   }
 
   render() {
-    return this.current && this.forecast ? html`
+    return this.weather.current && this.weather.current ? html`
     <div class="weather-wrap">
       <div class="current">
         <div class="temperature">
-          ${this.current.temp}°
+          ${this.weather.current.temp}°
         </div>
         <div class="humidity">
-          h: ${this.current.humidity}%
+          h: ${this.weather.current.humidity}%
         </div>
         <div class="wind">
-          wp: ${this.current.windSpeed.toFixed(0)} kph
+          wp: ${this.weather.current.windSpeed.toFixed(0)} kph
         </div>
       </div>
       <div class="clock-wrap">
         <slot></slot>
       </div>
       <div class="forecast">
-        ${this.forecast.map(weather => 
+        ${this.weather.forecast.map(weather => 
           html`
           <div class="forecast-item">
             <img src=${`http://openweathermap.org/img/wn/${weather.icon}@2x.png`}>

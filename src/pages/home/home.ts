@@ -2,7 +2,6 @@ import { LitElement, html } from "lit";
 import { customElement, state } from "lit/decorators.js";
 import { styleMap } from 'lit/directives/style-map.js';
 import { themeService, weatherService } from "../../services";
-import { SimpleWeather } from "../..//models";
 import { styles } from "./home.styles";
 
 import "../../components/weather/weather"
@@ -12,8 +11,8 @@ import "../../components/weather/weather"
 class HomeComponent extends LitElement {
   static styles = [styles];
 
-  private secondInterval = 0;
-  private hourInterval = 0;
+  private timeInterval = 0;
+  private weatherInterval = 0;
   private nextHorizon = 0;
 
   private themeSet = false;
@@ -31,13 +30,10 @@ class HomeComponent extends LitElement {
   @state()
   secondStyles = {};
 
-  @state()
-  weatherObject: {current: SimpleWeather, forecast: SimpleWeather[]};
-
   render() {
   return html`
     <div class="main">
-      <app-weather .current=${this.weatherObject?.current} .forecast=${this.weatherObject?.forecast}>
+      <app-weather>
         <div class="clock-wrap" @click=${this.requestFullscreen}>
           <div class="clock">
             <div class="hour" style=${styleMap(this.hourStyles)}></div>
@@ -48,14 +44,13 @@ class HomeComponent extends LitElement {
       </app-weather>
     </div>`;
   }
-  
 
   async connectedCallback() {
     super.connectedCallback();
 
     const deg = 6;
 
-    this.secondInterval = setInterval(() => {
+    this.timeInterval = setInterval(() => {
       const day = new Date();
       const hh = day.getHours() * 30;
       const mm = day.getMinutes() * deg;
@@ -67,12 +62,11 @@ class HomeComponent extends LitElement {
     }, 1000);
 
     this.setWeather();
-    this.hourInterval = setInterval(this.setWeather, 3600000);
+    this.weatherInterval = setInterval(this.setWeather, 900000);
   }
 
   async setWeather() {
-    const [current, forecast] = await weatherService.getWeather();
-    this.weatherObject = {current, forecast};
+    const [current, _] = await weatherService.getWeather();
 
     const sunset = new Date(current.sunset * 1000).getTime();
     const sunrise = new Date(current.sunrise * 1000).getTime();
@@ -104,8 +98,8 @@ class HomeComponent extends LitElement {
   }
 
   disconnectedCallback(): void {
-    clearInterval(this.secondInterval);
-    clearInterval(this.hourInterval);
+    clearInterval(this.timeInterval);
+    clearInterval(this.weatherInterval);
     clearTimeout(this.nextHorizon);
     super.disconnectedCallback();
   }
