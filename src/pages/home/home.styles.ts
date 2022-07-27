@@ -14,10 +14,6 @@ export const styles = css`
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 5rem;
-  }
-  .weather-wrap{
-    width: 50rem;
   }
 
   .clock {

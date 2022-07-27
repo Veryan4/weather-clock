@@ -1,18 +1,23 @@
 import { LitElement, html } from "lit";
 import { customElement, state } from "lit/decorators.js";
 import { styleMap } from 'lit/directives/style-map.js';
-import { themeService } from "../../services";
+import { themeService, weatherService } from "../../services";
+import { SimpleWeather } from "../..//models";
 import { styles } from "./home.styles";
 
-import "../../components/weather/weather";
+import "../../components/weather/weather"
+
 
 @customElement("clock-home")
 class HomeComponent extends LitElement {
   static styles = [styles];
 
   private secondInterval = 0;
-  private minuteInterval = 0;
+  private hourInterval = 0;
+  private nextHorizon = 0;
 
+  private themeSet = false;
+  
   constructor() {
     super();
   }
@@ -26,23 +31,26 @@ class HomeComponent extends LitElement {
   @state()
   secondStyles = {};
 
+  @state()
+  weatherObject: {current: SimpleWeather, forecast: SimpleWeather[]};
+
   render() {
   return html`
     <div class="main">
-      <div class="clock-wrap" @click=${this.requestFullscreen}>
-        <div class="clock">
-          <div class="hour" style=${styleMap(this.hourStyles)}></div>
-          <div class="min" style=${styleMap(this.minuteStyles)}></div>
-          <div class="sec" style=${styleMap(this.secondStyles)}></div>
+      <app-weather .current=${this.weatherObject?.current} .forecast=${this.weatherObject?.forecast}>
+        <div class="clock-wrap" @click=${this.requestFullscreen}>
+          <div class="clock">
+            <div class="hour" style=${styleMap(this.hourStyles)}></div>
+            <div class="min" style=${styleMap(this.minuteStyles)}></div>
+            <div class="sec" style=${styleMap(this.secondStyles)}></div>
+          </div>
         </div>
-      </div>
-      <div class="weather-wrap">
-        <app-weather></app-weather>
-      </div>
+      </app-weather>
     </div>`;
   }
+  
 
-  connectedCallback() {
+  async connectedCallback() {
     super.connectedCallback();
 
     const deg = 6;
@@ -58,22 +66,47 @@ class HomeComponent extends LitElement {
       this.secondStyles = { transform: `rotateZ(${ss}deg)`};
     }, 1000);
 
-    this.selectTheme();
-    this.minuteInterval = setInterval(this.selectTheme, 60000)
+    this.setWeather();
+    this.hourInterval = setInterval(this.setWeather, 3600000);
   }
 
-  selectTheme() {
-    const hour = new Date().getHours();
-    if (6 < hour && hour < 18) {
-      themeService.changeTheme("light")
-    } else {
-      themeService.changeTheme("dark")
+  async setWeather() {
+    const [current, forecast] = await weatherService.getWeather();
+    this.weatherObject = {current, forecast};
+
+    const sunset = new Date(current.sunset * 1000).getTime();
+    const sunrise = new Date(current.sunrise * 1000).getTime();
+    const now = Date.now()
+    if (sunrise >= now) {
+      const timeUntil = sunrise - now;
+      const timeUntilInHours = timeUntil / 60 / 60 / 1000;
+      if (timeUntilInHours <= 1) {
+        clearTimeout(this.nextHorizon);
+        this.nextHorizon = setTimeout(() => themeService.changeTheme("light"), timeUntil);
+      }
+    } else if (sunset >= now) {
+      const timeUntil = sunset - now;
+      const timeUntilInHours = timeUntil / 60 / 60 / 1000;
+      if (timeUntilInHours <= 1) {
+        clearTimeout(this.nextHorizon);
+        this.nextHorizon = setTimeout(() => themeService.changeTheme("dark"), timeUntil);
+      }
+    }
+
+    if(!this.themeSet) {
+      if (sunrise < now && now < sunset) {
+        themeService.changeTheme("light")
+      } else {
+        themeService.changeTheme("dark")
+      }
+      this.themeSet = true;
     }
   }
 
   disconnectedCallback(): void {
     clearInterval(this.secondInterval);
-    clearInterval(this.minuteInterval);
+    clearInterval(this.hourInterval);
+    clearTimeout(this.nextHorizon);
     super.disconnectedCallback();
   }
 }
