@@ -14,7 +14,7 @@ export const weatherService = {
 async function getWeather() {
     const [currentWeather, forecastWeather] = await Promise.all([getCurrent(), getForecast()]);
     const current = {
-        temp: currentWeather.main.temp.toFixed(1),
+        temp: currentWeather.main.temp.toFixed(0),
         icon: currentWeather.weather[0].icon,
         humidity: currentWeather.main.humidity,
         windSpeed: currentWeather.wind.speed,

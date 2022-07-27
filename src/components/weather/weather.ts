@@ -20,12 +20,6 @@ class WeatherComponent extends LitElement {
         <div class="temperature">
           ${this.weather.current.temp}°
         </div>
-        <div class="humidity">
-          h: ${this.weather.current.humidity}%
-        </div>
-        <div class="wind">
-          wp: ${this.weather.current.windSpeed.toFixed(0)} kph
-        </div>
       </div>
       <div class="clock-wrap">
         <slot></slot>
@@ -34,7 +28,7 @@ class WeatherComponent extends LitElement {
         ${this.weather.forecast.map(weather => 
           html`
           <div class="forecast-item">
-            <img src=${`http://openweathermap.org/img/wn/${weather.icon}@2x.png`}>
+            <img src=${`/weather-icons/${weather.icon}.png`}>
             <p class="forecast-text">${weather.temp}°</p>
           </div>`
         )}
