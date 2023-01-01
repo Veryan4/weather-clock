@@ -1,45 +1,36 @@
 import { LitElement, html } from "lit";
-import { customElement, state } from "lit/decorators.js";
-import { styleMap } from 'lit/directives/style-map.js';
+import { customElement } from "lit/decorators.js";
+import { classMap } from "lit-html/directives/class-map.js";
 import { themeService, weatherService } from "../../services";
+import { DeviceController } from "../../controllers";
 import { styles } from "./home.styles";
 
-import "../../components/weather/weather"
-
+import "../../components/forecast/forecast";
+import "../../components/temperature/temperature";
+import "../../components/weather/weather";
+import "../../components/clock/clock";
 
 @customElement("clock-home")
 class HomeComponent extends LitElement {
   static styles = [styles];
 
-  private timeInterval = 0;
+  private device = new DeviceController(this);
+
   private weatherInterval = 0;
   private nextHorizon = 0;
-
   private themeSet = false;
-  
-  constructor() {
-    super();
-  }
 
-  @state()
-  hourStyles = {};
-
-  @state()
-  minuteStyles = {};
-
-  @state()
-  secondStyles = {};
+  latitude = "45.24"; // defaults to Lac-Brome
+  longitude = "-72.65"; // defaults to Lac-Brome
 
   render() {
   return html`
-    <div class="main">
+    <div class="main" @click=${this.requestFullscreen}>
       <app-weather>
-        <div class="clock-wrap" @click=${this.requestFullscreen}>
-          <div class="clock">
-            <div class="hour" style=${styleMap(this.hourStyles)}></div>
-            <div class="min" style=${styleMap(this.minuteStyles)}></div>
-            <div class="sec" style=${styleMap(this.secondStyles)}></div>
-          </div>
+        <div class="content-wrap ${classMap({ wide: this.device.isWiderThanTall })}">
+          <app-temperature></app-temperature>
+            <app-clock></app-clock>
+          <app-forecast></app-forecast>
         </div>
       </app-weather>
     </div>`;
@@ -47,30 +38,16 @@ class HomeComponent extends LitElement {
 
   async connectedCallback() {
     super.connectedCallback();
-
-    const deg = 6;
-
-    this.timeInterval = setInterval(() => {
-      const day = new Date();
-      const hh = day.getHours() * 30;
-      const mm = day.getMinutes() * deg;
-      const ss = day.getSeconds() * deg;
-
-      this.hourStyles = { transform: `rotateZ(${hh + mm / 12}deg)`};
-      this.minuteStyles = { transform: `rotateZ(${mm}deg)`};
-      this.secondStyles = { transform: `rotateZ(${ss}deg)`};
-    }, 1000);
-
-    this.setWeather();
+    this.getLocation();
     this.weatherInterval = setInterval(this.setWeather, 900000);
   }
 
   async setWeather() {
-    const [current, _] = await weatherService.getWeather();
+    const [current, _] = await weatherService.getWeather(this.latitude, this.longitude);
 
     const sunset = new Date(current.sunset * 1000).getTime();
     const sunrise = new Date(current.sunrise * 1000).getTime();
-    const now = Date.now()
+    const now = Date.now();
     if (sunrise >= now) {
       const timeUntil = sunrise - now;
       const timeUntilInHours = timeUntil / 60 / 60 / 1000;
@@ -97,8 +74,26 @@ class HomeComponent extends LitElement {
     }
   }
 
+  getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          this.latitude = this.formatCoordinate(position.coords.latitude);
+          this.longitude = this.formatCoordinate(position.coords.longitude);
+          this.setWeather();
+        },
+        () => this.setWeather()
+      );
+    } else {
+      this.setWeather()
+    }
+  }
+
+  formatCoordinate(value: number){
+    return String(value.toFixed(2));
+  }
+
   disconnectedCallback(): void {
-    clearInterval(this.timeInterval);
     clearInterval(this.weatherInterval);
     clearTimeout(this.nextHorizon);
     super.disconnectedCallback();

@@ -37,13 +37,30 @@ export class SimpleWeather {
     humidity: number;
     windSpeed: number;
     sunrise?: number;
-    sunset?: number
+    sunset?: number;
+    type?: WeatherMain;
 }
 
 
 class WeatherSummary {
     id: number;
-    main: string;
+    main: WeatherMain;
     description: string;
     icon: string;
 }
+
+type WeatherMain = 
+    | 'Thunderstorm'
+    | 'Drizzle'
+    | 'Rain'
+    | 'Snow'
+    | 'Clear'
+    | 'Clouds' 
+    | 'Mist' 
+    | 'Haze' 
+    | 'Dust' 
+    | 'Fog' 
+    | 'Sand' 
+    | 'Ash' 
+    | 'Squall' 
+    | 'Tornado';

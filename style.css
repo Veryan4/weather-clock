@@ -2,11 +2,15 @@
   --main-bg-color: #fff;
   --main-text-color: #888888;
   --second-text-color: black;
+  --clock-color: black;
+  --accent-bg-color: rgba(255, 255, 255, 0.2);
 }
 [data-theme="dark"] {
   --main-bg-color: #1e1f26;
   --main-text-color: #ccc;
   --second-text-color: white;
+  --clock-color: #ccc;
+  --accent-bg-color: unset;
 }
 * {
   box-sizing: border-box;

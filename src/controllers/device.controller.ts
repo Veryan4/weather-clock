@@ -3,6 +3,7 @@ import { ReactiveControllerHost } from "lit";
 export class DeviceController {
   private host: ReactiveControllerHost;
   width = window.innerWidth;
+  isWiderThanTall = window.innerHeight < window.innerWidth;
   isMobile = window.innerWidth < 760;
 
   _checkWidth = (e: Event) => {
@@ -12,6 +13,7 @@ export class DeviceController {
       this.width > window.innerWidth + throttle
     ) {
       this.width = window.innerWidth;
+      this.isWiderThanTall = window.innerHeight < window.innerWidth;
       this.isMobile = window.innerWidth < 760;
       this.host.requestUpdate();
     }

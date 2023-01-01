@@ -2,8 +2,6 @@ import { CurrentWeather, ForecastWeather } from "../models";
 
 const host = "https://api.openweathermap.org/data/2.5/"
 const appid = import.meta.env.VITE_WEATHER_API_KEY as string
-const latitude = "45.24";
-const longitude= "-72.65";
 const WEATHER_EVENT = "weather-update";
 
 export const weatherService = {
@@ -11,11 +9,15 @@ export const weatherService = {
     WEATHER_EVENT
 }
 
-async function getWeather() {
-    const [currentWeather, forecastWeather] = await Promise.all([getCurrent(), getForecast()]);
+async function getWeather(latitude: string, longitude: string) {
+    const [currentWeather, forecastWeather] = await Promise.all([
+        getCurrent(latitude, longitude),
+        getForecast(latitude, longitude)
+    ]);
     const current = {
         temp: currentWeather.main.temp.toFixed(0),
         icon: currentWeather.weather[0].icon,
+        type: currentWeather.weather[0].main,
         humidity: currentWeather.main.humidity,
         windSpeed: currentWeather.wind.speed,
         sunset: currentWeather.sys.sunset,
@@ -28,6 +30,7 @@ async function getWeather() {
         return {
             temp: weatherHour.main.temp.toFixed(0),
             icon: weatherHour.weather[0].icon,
+            type: weatherHour.weather[0].main,
             humidity: weatherHour.main.humidity,
             windSpeed: weatherHour.wind.speed
         }
@@ -36,13 +39,13 @@ async function getWeather() {
     return [current, forecast] as const
 }
 
-async function getCurrent () {
+async function getCurrent(latitude: string, longitude: string) {
     const url = `${host}weather?lat=${latitude}&lon=${longitude}&units=metric&appid=${appid}`
     const weather = await fetch(url).then(res => res.json()) as CurrentWeather;
     return weather
 }
 
-async function getForecast () {
+async function getForecast(latitude: string, longitude: string) {
     const url = `${host}forecast?lat=${latitude}&lon=${longitude}&units=metric&cnt=9&appid=${appid}`
     const weather = await fetch(url).then(res => res.json()) as ForecastWeather;
     return weather

@@ -8,13 +8,17 @@ const root = document.querySelector(":root") as HTMLElement;
 function setLightTheme(): void {
   root.style.setProperty("--main-bg-color", "#fff");
   root.style.setProperty("--main-text-color", "#888888");
-  root.style.setProperty("---second-text-color", "black");
+  root.style.setProperty("--second-text-color", "black");
+  root.style.setProperty("--clock-color", "black");
+  root.style.setProperty("--accent-bg-color", "rgba(255, 255, 255, 0.2)");
 }
 
 function setDarkTheme(): void {
   root.style.setProperty("--main-bg-color", "#1e1f26");
   root.style.setProperty("--main-text-color", "#ccc");
-  root.style.setProperty("---second-text-color", "white");
+  root.style.setProperty("--second-text-color", "white");
+  root.style.setProperty("--clock-color", "#ccc");
+  root.style.setProperty("--accent-bg-color", "unset");
 }
 
 
